@@ -1,11 +1,17 @@
 import React, {useState,useEffect} from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import {ScrollView, SafeAreaView, View, FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {TextInput,} from 'react-native';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
 import Button from '../components/lib/Button';
+
+const Item = ({ title }) => (
+  <View style={{padding:20,backgroundColor:'gold',}}>
+    <Text style={{fontSize:20,}}>{title}</Text>
+  </View>
+);
 
 type MemoType = {
   id?:number,
@@ -76,6 +82,40 @@ const Daily = (props) => {
     setOthersMemos(copiedOthersMemos);
   }
 
+  const DATA = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'First Item',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      title: 'Second Item',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      title: 'Third Item',
+    },
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
+      title: 'First Item',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63f',
+      title: 'Second Item',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d7222',
+      title: 'Third Item',
+    },
+    
+  ];
+
+  
+  const renderItem = ({ item }) => (
+    <Item title={item.title} />
+  );
+
+
   return <Div className="p20">
     <ScrollView
       style={{paddingLeft:20, paddingRight:20,}}
@@ -84,6 +124,15 @@ const Daily = (props) => {
 
       <Div className="mt80">
       </Div>
+
+
+      <FlatList
+      nestedScrollEnabled
+        style={{height:150,}}
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
 
       <Text>Today’s Thought</Text>
 
