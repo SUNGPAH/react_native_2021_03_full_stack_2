@@ -7,7 +7,7 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import {signInAPI} from '../apis/Auth';
+import {signInAPI, validateAPI} from '../apis/Auth';
 import {setJwtToken, setUserBasicInfo, setUserSetting} from '../reducers/user';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
@@ -43,21 +43,14 @@ const Splash = (props) => {
         }else{
           AsyncStorage.getItem("jwt_token").then((jwtToken) => {
             if (jwtToken){
-              let body = {
-                jwt_token: jwtToken
-              };
 
-              signInAPI(body).then((json) => {
-                console.log(json);
+              dispatch(setJwtToken(jwtToken));
+              validateAPI().then((json) => {
                 if(json.success){
                   saveJwtToken(jwtToken)
-                  dispatch(setUserBasicInfo({
-                    email: 'test_2@turnchat.io',
-                    nick_name: "nick name default",
-                    birth: '19880103',
-                    lang: 'eng',
-                    region: 'italia'
-                  }));
+                  dispatch(setUserBasicInfo(json.user));
+                  console.log('-----------------');
+                  console.log(json.user);
                   dispatch(setUserSetting({
                     reminder: true,
                     is_public: true

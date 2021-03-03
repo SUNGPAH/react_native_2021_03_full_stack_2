@@ -23,9 +23,15 @@ const Login = (props) => {
         return 
       }
 
+      //eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NDYyNzExMjgwMDB9.hPjMqwjA_0jWyPD4KTbrckvsDjXCr4Kf7VYo71ZhIlQ
+
+
+
       const jwtToken = json.jwt_token;
       fcmListener.initialize(jwtToken); //this might be the way.. 
       dispatch(setJwtToken(jwtToken));
+
+      console.log(jwtToken);
       AsyncStorage.setItem("jwt_token", jwtToken);  
       Actions.list();
     })

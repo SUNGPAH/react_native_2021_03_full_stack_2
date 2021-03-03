@@ -13,7 +13,7 @@ export const setUserBasicInfo = (payload:UserBasicInfoType) => ({
 });
 
 export const setUserSetting = (payload:UserSettingType) => ({
-  type: SET_USER_BASIC_INFO,
+  type: SET_USER_SETTING,
   payload: payload,
 });
 

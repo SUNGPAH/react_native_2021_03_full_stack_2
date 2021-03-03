@@ -36,7 +36,9 @@ export const request = async(options, headerData, contentType) => {
     bearer = 'Bearer ' + jwtToken;
     headers.append('Authorization', bearer);
   } 
-    
+      
+  //Authorization
+
   const defaults = {headers: headers};
   options = Object.assign({}, defaults, options);
 

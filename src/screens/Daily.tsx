@@ -6,6 +6,7 @@ import {TextInput,} from 'react-native';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
 import Button from '../components/lib/Button';
+// import {memoCreateAPI} from '../apis/memo';
 
 const Item = ({ title }) => (
   <View style={{padding:20,backgroundColor:'gold',}}>
@@ -30,7 +31,9 @@ type OthersMemoType = {
 }
 
 const Daily = (props) => {
-  const jwtToken = useSelector(state => state.user.jwtToken);
+  const jwtToken = useSelector((state:any) => state.user.jwtToken);
+  const userBasicInfo = useSelector((state:any) => state.user.userBasicInfo);
+  
   const [content, setContent] = useState("");
   const [question, setQuestion] = useState({title:"", content:"", id:null});  
   const [memo, setMemo] = useState<MemoType>(null);
@@ -68,6 +71,18 @@ const Daily = (props) => {
       likes: 10,
     }
     setMemo(resMemo);
+    
+    // memoCreateAPI(resMemo).then((json:any) => {
+    //   console.log('result');
+    //   console.log(json);
+    //   if(json.success){
+    //     alert('success');
+    //   }else{
+    //     alert(json.message);
+    //   }
+    // })
+    
+
   }
 
   const likeOthersMemo = (memo:OthersMemoType) => {    
@@ -115,6 +130,13 @@ const Daily = (props) => {
     <Item title={item.title} />
   );
 
+  // <FlatList
+  // nestedScrollEnabled
+  //   style={{height:150,}}
+  //   data={DATA}
+  //   renderItem={renderItem}
+  //   keyExtractor={item => item.id}
+  // />
 
   return <Div className="p20">
     <ScrollView
@@ -125,19 +147,11 @@ const Daily = (props) => {
       <Div className="mt80">
       </Div>
 
-
-      <FlatList
-      nestedScrollEnabled
-        style={{height:150,}}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-
       <Text>Today’s Thought</Text>
 
       <Text>
-      hey Diana,
+      hey -{userBasicInfo.nick_name}-,
+      email: {userBasicInfo.email}-,
       share your thought of the day
       </Text>
 

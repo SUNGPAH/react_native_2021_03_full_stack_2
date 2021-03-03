@@ -15,9 +15,9 @@ if (Platform.OS === "android"){
 export const STORE_URL = storeUrl;
 export const APP_VERSION = appVersion;
 
-// export const APP_SERVER_PATH = "http://localhost:3000";
-export const APP_SERVER_PATH = "https://api.turnchat.io";
-export const APP_API_PATH = `${APP_SERVER_PATH}/api/v3`;
+export const APP_SERVER_PATH = "http://localhost:3000";
+// export const APP_SERVER_PATH = "https://api.turnchat.io";
+export const APP_API_PATH = `${APP_SERVER_PATH}/api/v1`;
 //adb reverse tcp:3000 tcp:3000
 export const defaultImgUrl = "https://d2mkevusy1mb28.cloudfront.net/web/online_study/profile_person.svg"
 

@@ -2,7 +2,7 @@ import {request} from '.';
 
 export const signInAPI = (payload) => {
   return request({
-    url:'/authenticate/signin',
+    url:'/user/authenticate',
     method:'POST',
     body:JSON.stringify(payload)
   }).then((data) => {
@@ -12,9 +12,18 @@ export const signInAPI = (payload) => {
   }, false)
 }
 
+export const validateAPI = () => {
+  return request({
+    url:'/user/validate',
+    method:'POST',
+  }).then((data) => {
+    return data
+  }, true)
+}
+
 export const postSignUpAPI = (payload) => {
   return request({
-    url:'/authenticate/complete_signup',
+    url:'/user/signup',
     method:'POST',
     body:JSON.stringify(payload)
   }).then((data) => {
