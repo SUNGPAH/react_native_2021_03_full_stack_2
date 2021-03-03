@@ -463,7 +463,6 @@ export const styleSheet = StyleSheet.create({
 		paddingLeft:5, paddingRight:5,
 	},
 
-
 	btnConLPrimary: {
 		backgroundColor: Color.primary,
 		height:56,

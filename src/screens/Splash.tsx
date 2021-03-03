@@ -49,15 +49,13 @@ const Splash = (props) => {
                 if(json.success){
                   saveJwtToken(jwtToken)
                   dispatch(setUserBasicInfo(json.user));
-                  console.log('-----------------');
-                  console.log(json.user);
                   dispatch(setUserSetting({
                     reminder: true,
                     is_public: true
                   }));
-                  Actions.replace("list");
+                  Actions.list();
                 }else{
-                  Actions.replace('intro');
+                  Actions.intro();
                 }
               })
               setSpinnerState(false);
@@ -65,7 +63,7 @@ const Splash = (props) => {
             }else{
               setInitialLoading(false);
               setSpinnerState(false);
-              Actions.replace('intro');
+              Actions.intro();
             }
           });          
         }

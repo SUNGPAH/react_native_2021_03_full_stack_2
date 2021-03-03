@@ -24,7 +24,7 @@ const CustomTabBar = ({navigation}:any) => {
         return <Button className="fc f1" key={element.key} onPress={() => Actions[element.key]()}>
           {
             index === activeTabIndex ?
-            <Text className="fS colPrimary bold">{pathNameKor}</Text>
+            <Text className="fS colWhite bold">{pathNameKor}</Text>
             :
             <Text className="fS">{pathNameKor}</Text>
           }

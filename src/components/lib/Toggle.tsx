@@ -5,6 +5,7 @@ UIManager, LayoutAnimation,
 } from 'react-native';
 
 import Div from './Div';
+import {Color} from '../../Constant';
 
 const Toggle = (props) => {
   // const [isActive, setIsActive] = useState(props.isActive);
@@ -19,7 +20,7 @@ const Toggle = (props) => {
   }
   return <TouchableWithoutFeedback onPress={onPress}>
     <View style={[styles.viewToggle, 
-    !props.isActive ? {backgroundColor: '#000'} : { backgroundColor: '#1780DE',  alignItems: 'flex-end'}]}>
+    !props.isActive ? {backgroundColor: '#000'} : { backgroundColor: Color.primary,  alignItems: 'flex-end'}]}>
       <Div style={styles.circleToggle}></Div>
     </View>
   </TouchableWithoutFeedback>

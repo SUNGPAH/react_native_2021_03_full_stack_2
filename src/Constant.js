@@ -22,7 +22,7 @@ export const APP_API_PATH = `${APP_SERVER_PATH}/api/v1`;
 export const defaultImgUrl = "https://d2mkevusy1mb28.cloudfront.net/web/online_study/profile_person.svg"
 
 export const Color = {
-	primary: "#2c59ff",
+	primary: "#98afe7",
 	white: "#fff",
 	white_secondary: "#fafcff",
 	light_gray: "#f7f9ff",

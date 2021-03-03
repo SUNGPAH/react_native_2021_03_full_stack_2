@@ -1,13 +1,15 @@
 import React, {useState,useEffect, useRef} from 'react';
 import {ScrollView, View, FlatList, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import {TextInput,} from 'react-native';
+import {useSelector,} from 'react-redux';
+import {TextInput, Image} from 'react-native';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
 import Button from '../components/lib/Button';
+import Toggle from '../components/lib/Toggle';
+
 import OthersMemoCard from '../components/Daily/OthersMemoCard';
 import {memoCreateAPI, getQuestionAPI, getOthersMemoAPI, memoLikeAPI, memoUnLikeAPI} from '../apis/memo';
+import { Color } from '../Constant';
 
 type MemoType = {
   id?:number,
@@ -26,12 +28,12 @@ type OthersMemoType = {
 }
 
 const Daily = (props) => {
-  // const jwtToken = useSelector((state:any) => state.user.jwtToken);
   const userBasicInfo = useSelector((state:any) => state.user.userBasicInfo);  
   const [content, setContent] = useState("");
   const [question, setQuestion] = useState({title:"", content:"", id:null});  
   const [memo, setMemo] = useState<MemoType>(null);
   const [othersMemos, setOthersMemos] = useState<OthersMemoType[]>([]);
+  const [isPublic, setIsPublic] = useState(true);
   const flatListRef = useRef(null)
 
   useEffect(() => {
@@ -79,7 +81,6 @@ const Daily = (props) => {
       likes: memo.do_i_like ? memo.likes - 1: memo.likes + 1
     }
     
-
     copiedOthersMemos[index] = newItem
     setOthersMemos(copiedOthersMemos);
 
@@ -102,9 +103,13 @@ const Daily = (props) => {
     />
   );
 
+  const onChange = (val) => {
+    setIsPublic(val);
+  }
+
   return <Div className="">
     <ScrollView
-      style={{backgroundColor:"#98afe7"}}
+      style={{backgroundColor:Color.primary}}
       showsVerticalScrollIndicator ={false}
       showsHorizontalScrollIndicator={false}>        
       <Div className="mt80">
@@ -135,26 +140,32 @@ const Daily = (props) => {
           memo ?
           <Div className="pr">
             <Text style={{fontSize:20, fontFamily:"Cochin"}}>{memo.content}</Text>
-            <Text style={{position:"absolute", right:0, bottom:0,}}>likes {memo.likes}</Text>
           </Div>
           :
           <TextInput
           multiline
           style={{borderWidth:0, borderColor:'transparent', padding:16, height:200,}}
-          placeholder="문제에 대한 내 답변을 정리해보세요. 스터디 참여 시, 참고하실 수 있습니다."
+          placeholder="Enter text (2,200 characters limit)"
           onChangeText={(value) => setContent(value)}
           value={content}/>
         }
-
         {
           !memo &&
-          <Div>
-            <Text>Toggle btn</Text>
-            <Button onPress={submit} className="bg_primary"><Text className="colWhite">save btn</Text></Button>
+          <Div className="fdr AIC fJCSB">
+            <Div className="fdr AIC">
+              <Toggle
+                onToggle={(val) => {onChange(val)}}
+                isActive={isPublic}
+              />
+              <Text style={{color:"#777d92", marginLeft:16,}}>is public</Text>
+            </Div>
+            <Button onPress={submit} className="btnConLPrimary pl20 pr20">
+              <Text className="colWhite fL">Save</Text>
+            </Button>
           </Div>
         }
       </Div>
-
+      {/*
       <Div className="flex fdr mt20">
         <Button 
           className="btnConLGray f1"
@@ -168,6 +179,7 @@ const Daily = (props) => {
           <Text>go top</Text>
         </Button>
       </Div>
+      */}
       <Div className="mt50"></Div>
 
       <Div className="p20">
@@ -187,7 +199,6 @@ const Daily = (props) => {
           onEndReachedThreshold={0.1}
           keyExtractor={item => item.id}
         />
-
         {/*
           ListHeaderComponent={<View style={{backgroundColor:'red',}}><Text>Header Component</Text></View>}
           ListFooterComponent={<View><Text>Footer Component</Text></View>}

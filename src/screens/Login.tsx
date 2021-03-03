@@ -10,6 +10,7 @@ import Button from '../components/lib/Button';
 import Text from '../components/lib/Text';
 import {TextInput,} from 'react-native';
 import fcmListener from '../listeners/fcm';
+import { Color } from '../Constant';
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -22,10 +23,6 @@ const Login = (props) => {
         alert(json.message);
         return 
       }
-
-      //eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NDYyNzExMjgwMDB9.hPjMqwjA_0jWyPD4KTbrckvsDjXCr4Kf7VYo71ZhIlQ
-
-
 
       const jwtToken = json.jwt_token;
       fcmListener.initialize(jwtToken); //this might be the way.. 
@@ -48,12 +45,12 @@ const Login = (props) => {
     })  
   }
 
-	return <Div className="p20"><Text>login page</Text>
+	return <Div className="p20">
     <Div className="mt80"></Div>
     <TextInput
       value={inputValue.email}
       style={{
-        width: '80%',
+        width: '100%',
         height: 50,
         borderBottomColor: '#ececec',
         borderBottomWidth: 1,
@@ -65,7 +62,7 @@ const Login = (props) => {
     <TextInput
       value={inputValue.pw}
       style={{
-        width: '80%',
+        width: '100%',
         height: 50,
         borderBottomColor: '#ececec',
         borderBottomWidth: 1,
@@ -74,14 +71,14 @@ const Login = (props) => {
       placeholder="password"
       onChangeText={(val) => {onChange("pw", val)}}
     />
-
-    <Button className="btnConLPrimary" onPress={login}>
-      <Text className="colWhite">Login</Text>
-    </Button>  
-
-    <Button className="btnOutLPrimary" onPress={goToSignup}>
-      <Text>Signup</Text>
-    </Button>  
+    <Div className="fdr mt80">
+      <Button className="btnConLPrimary f1" style={{marginRight:8,}} onPress={login}>
+        <Text className="colWhite">Login</Text>
+      </Button>  
+      <Button className="btnOutLPrimary f1" style={{marginLeft:8,}} onPress={goToSignup}>
+        <Text style={{color:Color.primary}}>Signup</Text>
+      </Button> 
+    </Div> 
   </Div>
 }
 
