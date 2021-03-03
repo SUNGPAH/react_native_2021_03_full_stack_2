@@ -10,7 +10,6 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 type Props = {};
 class App extends Component<Props> {
   render() {
-
     if(Platform.OS == 'ios'){
       return (
         <Provider store={store}>
@@ -21,7 +20,6 @@ class App extends Component<Props> {
           </SafeAreaView>
         </Provider>
       );
-
     }else{
       return <Provider store={store}>
         <SafeAreaProvider>

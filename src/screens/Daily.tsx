@@ -1,18 +1,14 @@
-import React, {useState,useEffect} from 'react';
-import {ScrollView, SafeAreaView, View, FlatList} from 'react-native';
+import React, {useState,useEffect, useRef} from 'react';
+import {ScrollView, View, FlatList, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {TextInput,} from 'react-native';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
 import Button from '../components/lib/Button';
-// import {memoCreateAPI} from '../apis/memo';
+import OthersMemoCard from '../components/Daily/OthersMemoCard';
 
-const Item = ({ title }) => (
-  <View style={{padding:20,backgroundColor:'gold',}}>
-    <Text style={{fontSize:20,}}>{title}</Text>
-  </View>
-);
+import {memoCreateAPI, getQuestionAPI, getOthersMemoAPI, memoLikeAPI, memoUnLikeAPI} from '../apis/memo';
 
 type MemoType = {
   id?:number,
@@ -30,59 +26,57 @@ type OthersMemoType = {
   do_i_like?:boolean,
 }
 
+//flastListRef.current.scrollToEnd()
+
 const Daily = (props) => {
-  const jwtToken = useSelector((state:any) => state.user.jwtToken);
-  const userBasicInfo = useSelector((state:any) => state.user.userBasicInfo);
-  
+  // const jwtToken = useSelector((state:any) => state.user.jwtToken);
+  const userBasicInfo = useSelector((state:any) => state.user.userBasicInfo);  
   const [content, setContent] = useState("");
   const [question, setQuestion] = useState({title:"", content:"", id:null});  
   const [memo, setMemo] = useState<MemoType>(null);
   const [othersMemos, setOthersMemos] = useState<OthersMemoType[]>([]);
+  const flatListRef = useRef(null)
 
   useEffect(() => {
-    const resQuestion = {
-      id: 5,
-      date: '2021-02-21',
-      title: "Advice!!",
-      content: "If you could go back in time, what’s one piece of advice you’d give to your younger self?",
-      question_translation: "한국어 트렌스레이션이라고 가정하자"
-    }
-    setQuestion(resQuestion);
-    let resOthersMemos = []
-
-    for(var i=0; i <10; i++) {
-      resOthersMemos.push({
-        id: i,
-        content: "yo this is sample",
-        likes: i,
-        user: {
-          nick_name: `{tester_${i}}`
-        },
-        do_i_like: true,
-      },)
-    }
-    setOthersMemos(resOthersMemos);
+    getQuestionAPI("").then((json:any) => {
+      setQuestion(json.question);
+      setMemo(json.memo);
+      getOthersMemoAPI(json.question.id).then((json:any) => {
+        console.log(json);
+        if(json.success){
+          setOthersMemos(json.list);
+        }
+      })
+    })
   }, []);
 
   const submit = () => {
     const resMemo = {
-      question_id: 5,
+      question_id: question.id,
       content: content,
-      likes: 10,
-    }
+      is_public: true
+    };
+
     setMemo(resMemo);
     
-    // memoCreateAPI(resMemo).then((json:any) => {
-    //   console.log('result');
-    //   console.log(json);
-    //   if(json.success){
-    //     alert('success');
-    //   }else{
-    //     alert(json.message);
-    //   }
-    // })
+    try{
+      memoCreateAPI(resMemo).then((json:any) => {
+        console.log('result');
+        console.log(json);
+        if(json.success){
+          alert('success');
+        }else{
+          alert(json.message);
+        }
+      })  
+    }catch(e){
+      alert(e.message);
+    }
     
 
+    // requires :content, type: String
+    // requires :question_id, type: Integer
+    // requires :is_public, type: Boolean
   }
 
   const likeOthersMemo = (memo:OthersMemoType) => {    
@@ -95,48 +89,25 @@ const Daily = (props) => {
 
     copiedOthersMemos[index] = newItem
     setOthersMemos(copiedOthersMemos);
+
+    if (newItem.do_i_like){
+      memoLikeAPI(memo.id).then((json:any) => {
+        console.log(json);
+      })
+    }else{
+      memoUnLikeAPI(memo.id).then((json:any) => {
+        console.log(json);
+      })
+    }
   }
-
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63f',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d7222',
-      title: 'Third Item',
-    },
-    
-  ];
-
   
-  const renderItem = ({ item }) => (
-    <Item title={item.title} />
+  const renderOthersMemoCard = ({ item }) => (
+    <OthersMemoCard
+      index={1}
+      othersMemo={item}
+      likeOthersMemo={likeOthersMemo}
+    />
   );
-
-  // <FlatList
-  // nestedScrollEnabled
-  //   style={{height:150,}}
-  //   data={DATA}
-  //   renderItem={renderItem}
-  //   keyExtractor={item => item.id}
-  // />
 
   return <Div className="p20">
     <ScrollView
@@ -155,8 +126,8 @@ const Daily = (props) => {
       share your thought of the day
       </Text>
 
-      <Text className="bold fL">{question.title}</Text>
-      <Text className="fM">{question.content}</Text>
+      <Text className="bold fL">id: {question.id}</Text>
+      <Text className="fM">content: {question.content}</Text>
       {
         memo ?
         <Div className="borderMidGray p20">
@@ -180,6 +151,17 @@ const Daily = (props) => {
         </Div>
       }
 
+      <Div>
+        <TouchableOpacity
+          onPress={() => {flatListRef.current.scrollToEnd()}}>
+          <Text>go back</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {flatListRef.current.scrollToOffset(0)}}>
+          <Text>go top</Text>
+        </TouchableOpacity>
+      </Div>
       <Div className="mt50"></Div>
       <Text>Other Thoughts
       See others’ thoughts on the question
@@ -187,26 +169,27 @@ const Daily = (props) => {
       filter
       </Text>
 
-      {
-        othersMemos.map((othersMemo:any, index:number) => {
-          return <Div className="borderPrimary p20" key={index}>
-            <Text>{othersMemo.content}</Text>
-            <Text>id - {othersMemo.id}</Text>
-            <Text>nick name:: {othersMemo.user.nick_name}</Text>
-
-            <Button onPress={(e:any) => {likeOthersMemo(othersMemo)}}>
-              {
-                othersMemo.do_i_like ?
-                <Text className="colRed">heart</Text>
-                :
-                <Div></Div>
-              }
-              <Text>Thumb:</Text>
-              <Text>likes - {othersMemo.likes}</Text>
-            </Button>
-          </Div>
-        })
-      }
+      <FlatList
+        ref={flatListRef}
+        horizontal={true}
+        style={{}}
+        data={othersMemos}
+        renderItem={renderOthersMemoCard}
+        /*
+        사이즈를 안다면.
+        */
+        onEndReached={() => {
+          if(othersMemos.length > 0){
+            //this is percent... so, better to calculate nicely.
+            //for instance, if the length is..
+            console.log('on_end_reached');
+          }
+        }}
+        onEndReachedThreshold={0.1}
+        keyExtractor={item => item.id}
+        ListHeaderComponent={<View style={{backgroundColor:'red',}}><Text>Header Component</Text></View>}
+        ListFooterComponent={<View><Text>Footer Component</Text></View>}
+      />
     </ScrollView>
   </Div>
 }

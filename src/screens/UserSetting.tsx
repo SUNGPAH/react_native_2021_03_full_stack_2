@@ -96,8 +96,11 @@ const UserSetting = (props) => {
       valueInit={inputValue.lang}
       onSelectClick={onLangSelect}
     />
-    <Button className="btnConLPrimary" onPress={submit}><Text className="colWhite">go</Text></Button>
-    <Button className="btnConLPrimary" onPress={signOut}><Text className="colWhite">signout</Text></Button>
+
+    <Div className="flex fdr">
+      <Button className="btnConLPrimary f1" onPress={submit}><Text className="colWhite">Save</Text></Button>
+      <Button className="btnConLGray f1" onPress={signOut}><Text className="colWhite">signout</Text></Button>
+    </Div>
   </Div>
 }
 
