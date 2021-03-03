@@ -8,22 +8,28 @@ import Text from '../lib/Text';
 import Button from '../lib/Button';
 
 const OthersMemoCard = ({index, othersMemo, likeOthersMemo}) => {
-  return <Div className="borderPrimary p20" key={index} style={{width:300, height:150,}}>
-  <Text>{othersMemo.content}</Text>
-  <Text>id - {othersMemo.id}</Text>
-  <Text>quesetion_id {othersMemo.question_id}</Text>
-  <Text>nick name:: {othersMemo.user.nick_name}</Text>
+  return <Div className="p20 bgWhite pr" 
+  key={index} style={{width:300, height:150, borderRadius:12, marginRight:4,}}>
+  <Text style={{fontSize:16, fontFamily:"Cochin"}}>{othersMemo.content}</Text>
 
-  <Button onPress={(e:any) => {likeOthersMemo(othersMemo)}}>
-    {
-      othersMemo.do_i_like ?
-      <Text className="colRed">heart</Text>
-      :
-      <Div></Div>
-    }
-    <Text>Thumb:</Text>
-    <Text>likes - {othersMemo.likes}</Text>
-  </Button>
+  <Div style={{position:"absolute", 
+    bottom:10, right:20,}}>
+    <Text style={{color:"#767676", fontFamily:"Cochin"}}>
+    {othersMemo.user.nick_name}</Text>
+  </Div>
+
+  <Div style={{position:"absolute", bottom:10, left:20,}}>
+    <Button onPress={(e:any) => {likeOthersMemo(othersMemo)}}>
+      {
+        othersMemo.do_i_like ?
+        <Text className="colRed">heart</Text>
+        :
+        <Div></Div>
+      }
+      <Text>Thumb:</Text>
+      <Text>likes - {othersMemo.likes}</Text>
+    </Button>
+  </Div>
 </Div>
 }
 
