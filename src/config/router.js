@@ -3,7 +3,6 @@ import {
   Scene,
   Router,
   ActionConst,
-  Tabs,
   Stack,
 } from 'react-native-router-flux';
 
@@ -51,11 +50,9 @@ const RouterComponent = () => {
             <Scene key="userSetting" hideNavBar component={UserSetting}/>            
           </Scene>
         </Scene>
-
-
+        
         <Scene key="pastDaily" hideNavBar component={PastDaily}/>
         <Scene key="userSetting" hideNavBar component={UserSetting}/>
-
       </Stack>
     </Router>
   );

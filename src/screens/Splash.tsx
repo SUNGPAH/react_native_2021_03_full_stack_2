@@ -1,13 +1,14 @@
 import React, {useState,useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
   Platform,
   Linking,
   Alert,
 } from 'react-native';
-import {signInAPI, validateAPI} from '../apis/Auth';
+import {validateAPI} from '../apis/Auth';
+
 import {setJwtToken, setUserBasicInfo, setUserSetting} from '../reducers/user';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
@@ -23,7 +24,6 @@ const Splash = (props) => {
   useEffect(() => {
     const os = Platform.OS;
     setTimeout(() => {
-      // mobileInitConfigAPI(Platform.OS, APP_VERSION).then(...
       const LTS_APP_VERSION = 1;
       if(os === 'ios'){
         if(LTS_APP_VERSION > APP_VERSION) {

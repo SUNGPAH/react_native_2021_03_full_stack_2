@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import {View,
   Text, TouchableOpacity, Image
 } from 'react-native';
+
 import { Actions } from 'react-native-router-flux';
 
 const Intro = (props) => {

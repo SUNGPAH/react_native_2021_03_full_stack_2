@@ -50,20 +50,19 @@ const Daily = (props) => {
   }, []);
 
   const submit = () => {
-    const resMemo = {
+    const payload = {
       question_id: question.id,
       content: content,
-      is_public: true
+      is_public: isPublic
     };
 
-    setMemo(resMemo);
-    
+    setMemo(payload);
+
     try{
-      memoCreateAPI(resMemo).then((json:any) => {
+      memoCreateAPI(payload).then((json:any) => {
         console.log('result');
         console.log(json);
         if(json.success){
-          alert('success');
         }else{
           alert(json.message);
         }
@@ -123,8 +122,7 @@ const Daily = (props) => {
         share your thought of the day
         </Text>
       </Div>
-      <Div 
-        className="p20"
+      <Div className="p20"
         style={{
         marginTop:40,
         borderRadius:20, 
@@ -165,7 +163,7 @@ const Daily = (props) => {
           </Div>
         }
       </Div>
-      {/*
+
       <Div className="flex fdr mt20">
         <Button 
           className="btnConLGray f1"
@@ -179,7 +177,7 @@ const Daily = (props) => {
           <Text>go top</Text>
         </Button>
       </Div>
-      */}
+
       <Div className="mt50"></Div>
 
       <Div className="p20">

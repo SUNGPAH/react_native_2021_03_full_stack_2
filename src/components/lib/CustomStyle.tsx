@@ -502,8 +502,6 @@ export const styleSheet = StyleSheet.create({
 		color:Color.white,
 	},
 
-
-
 	btnConMGray: {
 		backgroundColor: Color.gray,
 		height:42,

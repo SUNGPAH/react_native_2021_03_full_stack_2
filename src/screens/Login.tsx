@@ -28,8 +28,7 @@ const Login = (props) => {
       fcmListener.initialize(jwtToken); //this might be the way.. 
       dispatch(setJwtToken(jwtToken));
 
-      console.log(jwtToken);
-      AsyncStorage.setItem("jwt_token", jwtToken);  
+      AsyncStorage.setItem("jwt_token", jwtToken);   //cache
       Actions.list();
     })
   }
@@ -68,6 +67,7 @@ const Login = (props) => {
         borderBottomWidth: 1,
         color:'black'
       }}
+      secureTextEntry={true}
       placeholder="password"
       onChangeText={(val) => {onChange("pw", val)}}
     />
