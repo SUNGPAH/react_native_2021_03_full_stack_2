@@ -9,34 +9,6 @@ import {memoCreateAPI, getOthersMemoAPI, getQuestionAPI} from '../../apis/memo';
 import {setDailyMemo, setOthersMemos, setDailyQuestion} from '../../reducers/memo';
 
 const InputSection = ({dateString}) => {
-  useEffect(() => {
-    if(!dateString){
-      return
-    }
-
-    getQuestionAPI(dateString.replaceAll("-", "")).then((json:any) => {
-      dispatch(setDailyQuestion({
-        id: json.question.id,
-        content: json.question.content,
-        dateStr: json.question.date_str,
-      }));
-      const memo = json.memo;
-
-      if (memo){
-        dispatch(setDailyMemo({
-          memoId: memo.id,
-          questionId: json.question.id,
-          content: memo.content,
-          isPublic: memo.is_public
-        }));
-      }else{
-        dispatch(setDailyMemo(null));
-      }
-      getOthersMemos(json.question.id);
-    })
-
-  }, [dateString])
-
   const dispatch = useDispatch();
   const [content, setContent] = useState("");
   const [isPublic, setIsPublic] = useState(true);
@@ -107,6 +79,35 @@ const InputSection = ({dateString}) => {
       alert(e.message);
     }
   }
+
+  useEffect(() => {
+    if(!dateString){
+      return
+    }
+
+    getQuestionAPI(dateString.replaceAll("-", "")).then((json:any) => {
+      dispatch(setDailyQuestion({
+        id: json.question.id,
+        content: json.question.content,
+        dateStr: json.question.date_str,
+      }));
+      
+      const memo = json.memo;
+
+      if (memo){
+        dispatch(setDailyMemo({
+          memoId: memo.id,
+          questionId: json.question.id,
+          content: memo.content,
+          isPublic: memo.is_public
+        }));
+      }else{
+        dispatch(setDailyMemo(null));
+      }
+      getOthersMemos(json.question.id);
+    })
+
+  }, [dateString])
   
   if(!dailyQuestion) {
     return <></>

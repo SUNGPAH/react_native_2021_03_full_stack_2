@@ -72,7 +72,7 @@ const Daily = () => {
         share your thought of the day
         </Text>
       </Div>
-      <InputSection/>
+      <InputSection dateString={""}/>
       <OthersMemos/>
     </ScrollView>
   </Div>
