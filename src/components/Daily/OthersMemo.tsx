@@ -4,7 +4,7 @@ import Div from '../lib/Div';
 import Text from '../lib/Text';
 import Button from '../lib/Button';
 
-const OthersMemoCard = ({index, othersMemo, likeOthersMemo}) => {
+const OthersMemo = ({index, othersMemo, likeOthersMemo}) => {
   return <Div className="p20 bgWhite pr" 
   key={index} style={{width:300, height:150, borderRadius:12, marginRight:8,}}>
   <Text style={{fontSize:16, fontFamily:"Cochin"}}>{othersMemo.content}</Text>
@@ -29,5 +29,5 @@ const OthersMemoCard = ({index, othersMemo, likeOthersMemo}) => {
 </Div>
 }
 
-export default OthersMemoCard;
+export default OthersMemo;
 
