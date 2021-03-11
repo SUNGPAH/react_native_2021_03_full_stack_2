@@ -50,3 +50,12 @@ export const memoUnLikeAPI = (memoId) => {
     return data
   })
 }
+
+export const getCalendarAPI = (year, month) => {
+  return request({
+    url:`/memo/calendar?year=${year}&month=${month}`,
+    method:'GET',
+  }).then((data) => {
+    return data
+  })
+}

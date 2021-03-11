@@ -2,6 +2,10 @@ export const SET_DAILY_QUESTION = 'SET_DAILY_QUESTION' as const;
 export const SET_DAILY_MEMO = 'SET_DAILY_MEMO' as const;
 export const SET_OTHERS_MEMOS = 'SET_OTHERS_MEMOS' as const;
 export const UPDATE_OTHERS_MEMO = 'UPDATE_OTHERS_MEMO' as const;
+export const SET_CALENDAR_CURRENT_DATE = 'SET_CALENDAR_CURRENT_DATE' as const;
+export const SET_CALENDAR_MONTH = 'SET_CALENDAR_MONTH' as const;
+export const SET_CALENDAR_YEAR = 'SET_CALENDAR_YEAR' as const;
+export const SET_CALENDAR_MARKED_DATES = 'SET_CALENDAR_MARKED_DATES' as const;
 
 export const setDailyQuestion = (dailyQuestion:any) => ({
   type: SET_DAILY_QUESTION,
@@ -21,6 +25,26 @@ export const setOthersMemos = (list:any) => ({
 export const updateOthersMemo = (payload:any) => ({
   type: UPDATE_OTHERS_MEMO,
   payload: payload,
+})
+
+export const setCalendarCurrentDate = (payload:any) => ({
+  type: SET_CALENDAR_CURRENT_DATE,
+  payload: payload,
+})
+
+export const setCalendarYear = (year:number) => ({
+  type: SET_CALENDAR_YEAR,
+  payload: year,
+})
+
+export const setCalendarMonth = (month:number) => ({
+  type: SET_CALENDAR_MONTH,
+  payload: month,
+})
+
+export const setCalendarMarkedDates = (dates: any) => ({
+  type: SET_CALENDAR_MARKED_DATES,
+  payload: dates,
 })
 
 type DailyQuestionType = {
@@ -51,8 +75,8 @@ type OthersMemosType = OthersMemoType[]
 type CalendarType= {
 	year: number,
 	month: number,
-	monthStr: string
-	markingList: number[],
+  currentDate: string, //2021-03-03
+	markedDates: any[],
 }
 
 type MemoInitialType = {
@@ -75,6 +99,11 @@ type MemoActionType =
   | ReturnType<typeof setOthersMemos>
   | ReturnType<typeof updateOthersMemo>
 
+  | ReturnType<typeof setCalendarCurrentDate>
+  | ReturnType<typeof setCalendarYear>
+  | ReturnType<typeof setCalendarMonth>
+  | ReturnType<typeof setCalendarMarkedDates>
+
 const memo = (state: MemoInitialType = initialState, action:MemoActionType) => {
   switch (action.type) {
     case SET_DAILY_QUESTION:{
@@ -91,7 +120,6 @@ const memo = (state: MemoInitialType = initialState, action:MemoActionType) => {
     }
 
     case SET_OTHERS_MEMOS:{
-      //여기서 칼럼을 통일하는게 중요한디
       return {
         ...state,
         othersMemos: action.payload,
@@ -117,6 +145,43 @@ const memo = (state: MemoInitialType = initialState, action:MemoActionType) => {
         ...state,
         othersMemos: copy,
       }
+    }
+
+    case SET_CALENDAR_CURRENT_DATE: {
+      const cpCalendar = {...state.calendar}
+      cpCalendar.currentDate = '2021-03-25'
+      return {
+        ...state,
+        calendar: cpCalendar,
+      }
+    }
+
+    case SET_CALENDAR_YEAR : {
+      const cpCalendar = {...state.calendar}
+      cpCalendar.year = action.payload 
+      return {
+        ...state,
+        calendar: cpCalendar,
+      }
+    }
+
+    case SET_CALENDAR_MONTH : {
+      const cpCalendar = {...state.calendar}
+      cpCalendar.month = action.payload 
+      return {
+        ...state,
+        calendar: cpCalendar,
+      }
+    }
+
+    case SET_CALENDAR_MARKED_DATES: {
+      const cpCalendar = {...state.calendar}
+      cpCalendar.markedDates = action.payload 
+      return {
+        ...state,
+        calendar: cpCalendar,
+      }
+
     }
 
     default:

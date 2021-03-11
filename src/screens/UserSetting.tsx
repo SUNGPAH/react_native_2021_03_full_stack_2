@@ -9,14 +9,16 @@ import DropDownInput from '../components/lib/DropDownInput';
 import Text from '../components/lib/Text';
 import Toggle from '../components/lib/Toggle';
 import Button from '../components/lib/Button';
-import {TextInput, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
+import {updateUserSettingAPI, getUserSettingAPI} from '../apis/Auth';
 import {langList} from '../Common';
 import { Color } from '../Constant';
 
 const UserSetting = (props) => {
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState({nickName:"", birth:"",
-  reminder: false, lang: "eng"});
+
+  //간단한 페이지의 경우에는 useEffect로 해볼 수도 있습니다.
+  const [inputValue, setInputValue] = useState({isReminderOn: false, lang: "eng", alarmTimeInt: null});
 
   const onLangSelect = (key:string, value:any) => {
     setInputValue({
@@ -25,12 +27,18 @@ const UserSetting = (props) => {
     })  
   }
   useEffect(() => {
-    setInputValue({
-      nickName: "sungpah",
-      birth: '19880103',
-      reminder: false,
-      lang: 'kor',
-    })
+    getUserSettingAPI().then((json:any) => {
+      const userSetting = json.user_setting;
+      if(!userSetting) {
+        return;
+      }
+
+      setInputValue({
+        isReminderOn: userSetting.is_reminder_on,
+        lang: userSetting.lang,
+        alarmTimeInt: userSetting.alarm_time_int,
+      })
+    });
   }, [])
 
   const onChange = (key:string, value: string) => {
@@ -41,11 +49,19 @@ const UserSetting = (props) => {
   }
 
   const submit = () => {
-    alert(inputValue.lang);
+    const camelToSnakeCase = (str:string) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+
+    let snakePayload = {}
+    Object.entries(inputValue).forEach(([key, value]) => {
+      snakePayload[camelToSnakeCase(key)] = value;
+    })
+
+    updateUserSettingAPI(snakePayload).then((json:any) => {
+      alert('updated');
+    })
   }
 
   const signOut = () => {
-    //remove all state!
     dispatch(userLogOut());
     AsyncStorage.clear();
     Actions.intro();
@@ -76,34 +92,11 @@ const UserSetting = (props) => {
       backgroundColor:'white', 
       paddingBottom:40,
       paddingTop:40,}}>
-      <TextInput
-        value={inputValue.nickName}
-        style={{
-          width: '80%',
-          height: 50,
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          color:'black'
-        }}
-        placeholder="nickName"
-        onChangeText={(val) => {onChange("nickName", val)}}
-      />
-      <TextInput
-        value={inputValue.birth}
-        style={{
-          width: '80%',
-          height: 50,
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          color:'black'
-        }}
-        placeholder="birth"
-        onChangeText={(val) => {onChange("birth", val)}}
-      />
+      
       <Div className="flex fdr mt16 AIC">
         <Toggle
-          onToggle={(val) => {onChange("reminder", val)}}
-          isActive={inputValue.reminder}
+          onToggle={(val) => {onChange("isReminderOn", val)}}
+          isActive={inputValue.isReminderOn}
         />
         <Text style={{marginLeft:8,}}>reminder?</Text>
       </Div>

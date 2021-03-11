@@ -57,6 +57,26 @@ export const getUserInfoAPI = (jwtToken) => {
   })
 }
 
+export const updateUserSettingAPI = (payload) => {
+  return request({
+    url:'/user_setting/update',
+    method:'POST',
+    body: JSON.stringify(payload)
+  }).then((data) => {
+    return data; //return promise
+  })
+}
+
+export const getUserSettingAPI = (payload) => {
+  return request({
+    url:'/user_setting',
+    method:'GET',
+  }).then((data) => {
+    return data; //return promise
+  })
+}
+
+
 export const errorAPI = (payload) => {
   return request({
     url:'/error',
