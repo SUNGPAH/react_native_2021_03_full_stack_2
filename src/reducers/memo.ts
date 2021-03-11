@@ -50,6 +50,7 @@ export const setCalendarMarkedDates = (dates: any) => ({
 type DailyQuestionType = {
 	id: number,
 	content: string,
+  dateStr: string,
 }
 
 type DailyMemoType = {

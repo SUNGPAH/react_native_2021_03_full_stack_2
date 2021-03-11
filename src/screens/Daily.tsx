@@ -19,7 +19,11 @@ const Daily = () => {
 
   useEffect(() => {
     getQuestionAPI("").then((json:any) => {
-      dispatch(setDailyQuestion(json.question));
+      dispatch(setDailyQuestion({
+        id: json.question.id,
+        content: json.question.content,
+        dateStr: json.question.date_str,
+      }));
       const memo = json.memo;
       if (memo){
         dispatch(setDailyMemo({
@@ -70,6 +74,21 @@ const Daily = () => {
         //백그라운드 작업이 잘 된다고 가정하고 시작.
         if(json.success){
           //더 완벽히 하기 위해선, 리턴된 id값까지 업데이트해주면 되지만 생략
+          getOthersMemoAPI(questionId).then((json:any) => {
+            if(json.success){
+              const mappedList = json.list.map((x:any) => {
+                return {
+                  id: x.id,
+                  content: x.content,
+                  question_id: x.question_id,
+                  likesCount: x.likes,
+                  user: {nickName: x.user.nick_name},
+                  doILike: x.do_i_like
+                }
+              })
+              dispatch(setOthersMemos(mappedList));
+            }
+          })
         }else{
           alert(json.message);
         }

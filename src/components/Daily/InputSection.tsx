@@ -18,6 +18,10 @@ const InputSection = ({submit}) => {
 
   const onPress = () => {
     if(dailyQuestion){
+      if(content === ""){
+        alert('it is empty');
+        return
+      }
       submit(content, isPublic, dailyQuestion.id);
     }else{
       return false
@@ -35,7 +39,7 @@ const InputSection = ({submit}) => {
   backgroundColor:'white', 
   paddingBottom:40,
   paddingTop:40,}}>
-  <Text className="" style={{fontSize:16, fontWeight:'bold', color:"#8fa5db"}}>Jan 21,2021</Text>
+  <Text className="" style={{fontSize:16, fontWeight:'bold', color:"#8fa5db"}}>{dailyQuestion.dateStr}</Text>
   <Text className="" style={{marginTop:16, fontSize:24, fontWeight:'bold',}}>Advice</Text>
   <Text className="" style={{marginTop:8, fontSize:20, fontFamily:"Cochin"}}>{dailyQuestion.content}</Text>
 

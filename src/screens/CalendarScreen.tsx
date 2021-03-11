@@ -21,6 +21,7 @@ LocaleConfig.locales['kor'] = {
   dayNamesShort: ['일','월','화','수','목','금','토'],
   today: '오늘'
 };
+
 LocaleConfig.defaultLocale = 'kor';
 
 const CalendarScreen = (props) => {
@@ -83,12 +84,11 @@ const CalendarScreen = (props) => {
     </Div>
     <Calendar
       markedDates={calendar.markedDates}
-      // Initially visible month. Default = Date()
       current={calendar.currentDate}
-      // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
       minDate={'2012-05-10'}
       onDayPress={(day) => {
         openDaily(day.dateString);
+        alert(day.dateString);
       }}
       onDayLongPress={(day) => {console.log('selected day', day)}}
       monthFormat={'yyyy MM'}
