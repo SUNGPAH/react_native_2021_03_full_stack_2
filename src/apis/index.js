@@ -17,28 +17,19 @@ export function getPusherUrl() {
   return APP_SERVER_PATH + '/pusher/auth_new'
 }
 
-export const request = async(options, headerData, contentType) => {
+export const request = async(options) => {
   let headers = new Headers({})
-  if(contentType === "image"){
-  }else{
-    headers.append("Content-Type", "application/json");
-  }
 
   let bearer = null;
-
-  if(headerData) {
-    headers.append('Password', headerData);
-  }
-
   const jwtToken = getToken()
 
   if(jwtToken) {
     bearer = 'Bearer ' + jwtToken;
     headers.append('Authorization', bearer);
   } 
-      
-  //Authorization
 
+  headers.append("Content-Type", "application/json");
+      
   const defaults = {headers: headers};
   options = Object.assign({}, defaults, options);
 

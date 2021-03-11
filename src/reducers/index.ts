@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import user from './user';
+import memo from './memo';
 
 export const USER_LOGOUT = "USER_LOGOUT"
 export const userLogOut = () => ({
@@ -7,7 +8,8 @@ export const userLogOut = () => ({
 });
 
 const appReducer = combineReducers({
-  user
+  user,
+  memo
 })
 
 const rootReducer = (state, action) => {

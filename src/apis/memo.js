@@ -6,7 +6,7 @@ export const getQuestionAPI = (yyyymmdd) => {
     method:'GET',
   }).then((data) => {
     return data
-  }, false)
+  })
 }
 
 export const getOthersMemoAPI = (questionId) => {
@@ -15,7 +15,7 @@ export const getOthersMemoAPI = (questionId) => {
     method:'GET',
   }).then((data) => {
     return data
-  }, false)
+  })
 }
 
 export const memoCreateAPI = (payload) => {
@@ -26,7 +26,7 @@ export const memoCreateAPI = (payload) => {
   }).then((data) => {
     console.log(data);
     return data
-  }, false)
+  })
 }
 
 export const memoLikeAPI = (memoId) => {
@@ -37,7 +37,7 @@ export const memoLikeAPI = (memoId) => {
   }).then((data) => {
     console.log(data);
     return data
-  }, true)
+  })
 }
 
 export const memoUnLikeAPI = (memoId) => {
@@ -48,5 +48,5 @@ export const memoUnLikeAPI = (memoId) => {
   }).then((data) => {
     console.log(data);
     return data
-  }, true)
+  })
 }

@@ -29,10 +29,8 @@ const RouterComponent = () => {
         <Scene key="login" hideNavBar component={Login} 
 				gesturesEnabled={false} panHandlers={null}/>				
         <Scene key="signup" hideNavBar component={Signup} />
-
         <Scene key="list" hideNavBar
-          gesturesEnabled={false}
-          >
+          gesturesEnabled={false}>
           <Scene
             gesturesEnabled={false}
             type={ActionConst.RESET}

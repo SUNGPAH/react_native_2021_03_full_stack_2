@@ -1,8 +1,5 @@
-import React, {useState,useEffect} from 'react';
-import {ScrollView, View, FlatList} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import {TextInput,Image} from 'react-native';
+import React from 'react';
+import {Image} from 'react-native';
 import Div from '../lib/Div';
 import Text from '../lib/Text';
 import Button from '../lib/Button';
@@ -15,18 +12,18 @@ const OthersMemoCard = ({index, othersMemo, likeOthersMemo}) => {
   <Div style={{position:"absolute", 
     bottom:10, right:20,}}>
     <Text style={{color:"#767676", fontFamily:"Cochin"}}>
-    {othersMemo.user.nick_name}</Text>
+    {othersMemo.user.nickName}</Text>
   </Div>
 
   <Div style={{position:"absolute", bottom:10, left:20,}}>
     <Button onPress={(e:any) => {likeOthersMemo(othersMemo)}} className="fdr">
       {
-        othersMemo.do_i_like ?
+        othersMemo.doILike ?
         <Image style={{width:20, height:20,}} source={require('../../resource/like_active.png')} />
         :
         <Image style={{width:20, height:20,}} source={require('../../resource/like.png')} />
       }
-      <Text style={{color:'#777d92', marginLeft:10,}}>{othersMemo.likes}</Text>
+      <Text style={{color:'#777d92', marginLeft:10,}}>{othersMemo.likesCount}</Text>
     </Button>
   </Div>
 </Div>
