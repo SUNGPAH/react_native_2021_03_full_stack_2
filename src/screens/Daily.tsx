@@ -56,26 +56,24 @@ const Daily = () => {
     })
   }
 
-  return <Div className="">
-    <ScrollView
-      style={{backgroundColor:Color.primary}}
-      showsVerticalScrollIndicator ={false}
-      showsHorizontalScrollIndicator={false}>        
-      <Div className="mt80">
-      </Div>
-      <Div className="pl20 pr20">
-        <Text style={{fontSize:24, fontWeight:'bold',fontFamily:"Cochin"}} className="colWhite">Today’s Thought</Text>
-        <Text style={{fontSize:18, fontFamily:"Cochin"}} className="colWhite">
-        hey -{userBasicInfo.nick_name}-,
-        email: {userBasicInfo.email}-,
-        {"\n"}
-        share your thought of the day
-        </Text>
-      </Div>
-      <InputSection dateString={""}/>
-      <OthersMemos/>
-    </ScrollView>
-  </Div>
+  return  <ScrollView
+    style={{backgroundColor:Color.primary}}
+    showsVerticalScrollIndicator ={false}
+    showsHorizontalScrollIndicator={false}>        
+    <Div className="mt80">
+    </Div>
+    <Div className="pl20 pr20">
+      <Text style={{fontSize:24, fontWeight:'bold',fontFamily:"Cochin"}} className="colWhite">Today’s Thought</Text>
+      <Text style={{fontSize:18, fontFamily:"Cochin"}} className="colWhite">
+      hey -{userBasicInfo.nick_name}-,
+      email: {userBasicInfo.email}-,
+      {"\n"}
+      share your thought of the day
+      </Text>
+    </Div>
+    <InputSection dateString={""}/>
+    <OthersMemos/>
+  </ScrollView>
 }
 
 export default Daily;

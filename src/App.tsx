@@ -6,6 +6,7 @@ import store from './config/store';
 
 import {SafeAreaView, StatusBar, Platform} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Color} from './Constant';
 
 type Props = {};
 class App extends Component<Props> {
@@ -13,8 +14,8 @@ class App extends Component<Props> {
     if(Platform.OS == 'ios'){
       return (
         <Provider store={store}>
-          <SafeAreaView style={{ flex: 0, backgroundColor: '#fff'}}></SafeAreaView>
-          <SafeAreaView style={{flex:1,}}>
+          <SafeAreaView style={{ flex: 0, backgroundColor: Color.primary}}></SafeAreaView>
+          <SafeAreaView style={{flex:1, backgroundColor: Color.primary,}}>
             <StatusBar barStyle="dark-content"/>
             <Router />
           </SafeAreaView>
