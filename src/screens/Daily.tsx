@@ -18,6 +18,7 @@ const Daily = () => {
   //유저 베이직 인포의 경우, frequent 한 업데이트가 자주 되진 않기 때문에, 편하게 가져옴 
 
   useEffect(() => {
+    //yyyymmdd
     getQuestionAPI("").then((json:any) => {
       dispatch(setDailyQuestion({
         id: json.question.id,
@@ -33,71 +34,28 @@ const Daily = () => {
           isPublic: memo.is_public
         }));
       }
-      getOthersMemoAPI(json.question.id).then((json:any) => {
-        if(json.success){
-          const mappedList = json.list.map((x:any) => {
-            return {
-              id: x.id,
-              content: x.content,
-              question_id: x.question_id,
-              likesCount: x.likes,
-              user: {nickName: x.user.nick_name},
-              doILike: x.do_i_like
-            }
-          })
-          dispatch(setOthersMemos(mappedList));
-        }
-      })
+      getOthersMemos(json.question.id);
     })
   }, []);
 
-  //이 서밋 함수에는 appState가 쓰이지 않음. dispatch는 해주지만!
-  const submit = (content:string, isPublic: boolean, questionId: number) => {
-    //여기에 appState가 쓰이지 않는게 중요!
-    const payload = {
-      memoId: 123124, //some random -- why? 
-      questionId: questionId,
-      content: content,
-      isPublic: isPublic
-    };
-
-    dispatch(setDailyMemo(payload))
-    const camelToSnakeCase = (str:string) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
-
-    let snakePayload = {}
-    Object.entries(payload).forEach(([key, value]) => {
-      snakePayload[camelToSnakeCase(key)] = value;
+  const getOthersMemos = (questionId:number) => {
+    getOthersMemoAPI(questionId).then((json:any) => {
+      if(json.success){
+        const mappedList = json.list.map((x:any) => {
+          return {
+            id: x.id,
+            content: x.content,
+            question_id: x.question_id,
+            likesCount: x.likes,
+            user: {nickName: x.user.nick_name},
+            doILike: x.do_i_like
+          }
+        })
+        dispatch(setOthersMemos(mappedList));
+      }
     })
-
-    try{
-      memoCreateAPI(snakePayload).then((json:any) => {
-        //백그라운드 작업이 잘 된다고 가정하고 시작.
-        if(json.success){
-          //더 완벽히 하기 위해선, 리턴된 id값까지 업데이트해주면 되지만 생략
-          getOthersMemoAPI(questionId).then((json:any) => {
-            if(json.success){
-              const mappedList = json.list.map((x:any) => {
-                return {
-                  id: x.id,
-                  content: x.content,
-                  question_id: x.question_id,
-                  likesCount: x.likes,
-                  user: {nickName: x.user.nick_name},
-                  doILike: x.do_i_like
-                }
-              })
-              dispatch(setOthersMemos(mappedList));
-            }
-          })
-        }else{
-          alert(json.message);
-        }
-      })  
-    }catch(e){
-      alert(e.message);
-    }
   }
-  
+
   return <Div className="">
     <ScrollView
       style={{backgroundColor:Color.primary}}
@@ -114,7 +72,7 @@ const Daily = () => {
         share your thought of the day
         </Text>
       </Div>
-      <InputSection submit={submit}/>
+      <InputSection/>
       <OthersMemos/>
     </ScrollView>
   </Div>

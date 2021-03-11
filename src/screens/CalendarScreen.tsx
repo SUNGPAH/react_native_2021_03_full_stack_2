@@ -1,10 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Div from '../components/lib/Div';
 import Text from '../components/lib/Text';
 import {LocaleConfig, Calendar} from 'react-native-calendars';
 import {getCalendarAPI} from '../apis/memo';
 import {setCalendarCurrentDate, setCalendarYear, setCalendarMonth, setCalendarMarkedDates} from '../reducers/memo';
+import InputSection from '../components/Daily/InputSection';
+import OthersMemos from '../components/Daily/OthersMemos';
+import { Color } from '../Constant';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
@@ -27,6 +31,7 @@ LocaleConfig.defaultLocale = 'kor';
 const CalendarScreen = (props) => {
   const dispatch = useDispatch();
   const calendar = useSelector((state:any) => state.memo.calendar); 
+  const [dateString, setDateString] = useState("");
 
   useEffect(() => {
     getCalendarApiWrapper(0, 0); //init
@@ -79,7 +84,10 @@ const CalendarScreen = (props) => {
     return <></>
   }
 
-	return <Div>
+	return <ScrollView
+    style={{backgroundColor:Color.primary}}
+    showsVerticalScrollIndicator ={false}
+    showsHorizontalScrollIndicator={false}>  
     <Div className="mt80">
     </Div>
     <Calendar
@@ -88,7 +96,8 @@ const CalendarScreen = (props) => {
       minDate={'2012-05-10'}
       onDayPress={(day) => {
         openDaily(day.dateString);
-        alert(day.dateString);
+        // alert(day.dateString);
+        setDateString(day.dateString);
       }}
       onDayLongPress={(day) => {console.log('selected day', day)}}
       monthFormat={'yyyy MM'}
@@ -112,7 +121,13 @@ const CalendarScreen = (props) => {
         return <Div><Text>{header}</Text></Div>}}
       enableSwipeMonths={true}    
     />
-  </Div>
+
+    <InputSection
+      dateString={dateString}
+    />
+    <OthersMemos/>
+
+  </ScrollView>
 }
 
 export default CalendarScreen;

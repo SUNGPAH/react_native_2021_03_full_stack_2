@@ -5,8 +5,39 @@ import Div from '../lib/Div';
 import Text from '../lib/Text';
 import Button from '../lib/Button';
 import Toggle from '../lib/Toggle';
+import {memoCreateAPI, getOthersMemoAPI, getQuestionAPI} from '../../apis/memo';
+import {setDailyMemo, setOthersMemos, setDailyQuestion} from '../../reducers/memo';
 
-const InputSection = ({submit}) => {
+const InputSection = ({dateString}) => {
+  useEffect(() => {
+    if(!dateString){
+      return
+    }
+
+    getQuestionAPI(dateString.replaceAll("-", "")).then((json:any) => {
+      dispatch(setDailyQuestion({
+        id: json.question.id,
+        content: json.question.content,
+        dateStr: json.question.date_str,
+      }));
+      const memo = json.memo;
+
+      if (memo){
+        dispatch(setDailyMemo({
+          memoId: memo.id,
+          questionId: json.question.id,
+          content: memo.content,
+          isPublic: memo.is_public
+        }));
+      }else{
+        dispatch(setDailyMemo(null));
+      }
+      getOthersMemos(json.question.id);
+    })
+
+  }, [dateString])
+
+  const dispatch = useDispatch();
   const [content, setContent] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const dailyQuestion = useSelector((state:any) => state.memo.dailyQuestion);
@@ -28,6 +59,55 @@ const InputSection = ({submit}) => {
     }
   }
 
+  const getOthersMemos = (questionId:number) => {
+    getOthersMemoAPI(questionId).then((json:any) => {
+      if(json.success){
+        const mappedList = json.list.map((x:any) => {
+          return {
+            id: x.id,
+            content: x.content,
+            question_id: x.question_id,
+            likesCount: x.likes,
+            user: {nickName: x.user.nick_name},
+            doILike: x.do_i_like
+          }
+        })
+        dispatch(setOthersMemos(mappedList));
+      }
+    })
+  }
+
+  //이 서밋 함수에는 appState가 쓰이지 않음. dispatch는 해주지만!
+  const submit = (content:string, isPublic: boolean, questionId: number) => {
+    //여기에 appState가 쓰이지 않는게 중요!
+    const payload = {
+      memoId: 123124, //some random -- why? 
+      questionId: questionId,
+      content: content,
+      isPublic: isPublic
+    };
+
+    dispatch(setDailyMemo(payload))
+    const camelToSnakeCase = (str:string) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+
+    let snakePayload = {}
+    Object.entries(payload).forEach(([key, value]) => {
+      snakePayload[camelToSnakeCase(key)] = value;
+    })
+
+    try{
+      memoCreateAPI(snakePayload).then((json:any) => {
+        if(json.success){
+          getOthersMemos(questionId);
+        }else{
+          alert(json.message);
+        }
+      })  
+    }catch(e){
+      alert(e.message);
+    }
+  }
+  
   if(!dailyQuestion) {
     return <></>
   }
